@@ -1,0 +1,6 @@
+pyinstaller
+nuitka
+colorama
+asyncio
+asyncio
+re
