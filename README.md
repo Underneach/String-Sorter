@@ -16,3 +16,7 @@
 
 ### Multiprocessing - Распределение сортинга по всем ядрам процессора (Рекомендуется)
 ![image](https://github.com/Underneach/String-Sorter/assets/137613889/f4a17206-6fcd-4632-8b1c-a31726aa6314)
+
+
+## Скачать
+https://github.com/Underneach/String-Sorter/releases/
