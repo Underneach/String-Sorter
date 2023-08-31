@@ -1,6 +1,5 @@
 pyinstaller
 nuitka
 colorama
-asyncio
-asyncio
+multiprocessing
 re
