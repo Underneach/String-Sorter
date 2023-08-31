@@ -1,1 +1,0 @@
-nuitka --onefile --standalone --remove-output --show-progress --follow-import-to=os --follow-import-to=colorama --follow-import-to=re --follow-import-to=aiofiles main_async.py
