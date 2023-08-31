@@ -1,16 +1,12 @@
 # String-Sorter
-## Сортер url:log:pass строк из файла
+## Сортер ваших url:log:pass строк из файла
+![image](https://github.com/Underneach/String-Sorter/assets/137613889/1bffdf6a-a17b-414d-8e01-a2e8aa1a0688)
 
-    Поиск по регулярному выражению
-    Запись найденных строк в файл result.txt
-    Возмжность запуск сортировки файла перетягиванием на скрипт
-
-
-## Все тесты проводились на одном пк ( 6 ядер / 12 потоков / 16 Гб RAM) с одним файлом в 13266511 строк
-
-### Multiprocessing - Распределение сортинга по всем ядрам процессора
-![image](https://github.com/Underneach/String-Sorter/assets/137613889/f4a17206-6fcd-4632-8b1c-a31726aa6314)
-
+    Открытие базы перетягиванием
+    Поиск по регулярному выражению search_request + '.*:(.+:.+)'
+    Запись найденных строк в файл с названием запроса
+    Сортировка на дубли
+    Билды nuitka и pyinstaller
 
 ## Скачать
 https://github.com/Underneach/String-Sorter/releases/
