@@ -2,6 +2,8 @@ import os
 import re
 import sys
 import time
+import asyncio
+import aiofiles
 from multiprocessing import Pool, freeze_support
 
 import colorama
@@ -19,12 +21,12 @@ class Sorter:
         for request in search_requests:
             self.results[request] = {'compile_request': re.compile(request + '.*:(.+:.+)'), 'extracted_data': []}
 
-    def process_folder(self, request):
+    async def process_file(self, request):
         try:
             sorted_data = list(set(self.results[request]['extracted_data']))
             print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] {colorama.Fore.LIGHTCYAN_EX}{request}{colorama.Style.RESET_ALL} : {colorama.Fore.LIGHTCYAN_EX}{len(sorted_data)}{colorama.Style.RESET_ALL} строк')
-            with open(f'{self.app_dir}\\{request}.txt', 'w', encoding='utf-8', buffering=4096) as file:
-                file.write('\n'.join(sorted_data) + '\n')
+            async with aiofiles.open(f'{self.app_dir}\\{request}.txt', 'w', encoding='utf-8', buffering=4096) as file:
+                await file.write('\n'.join(sorted_data) + '\n')
 
         except Exception as e:
             print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] {colorama.Fore.LIGHTCYAN_EX}{request}.txt{colorama.Style.RESET_ALL} : Ошибка: {colorama.Fore.LIGHTRED_EX}{str(e)}{colorama.Style.RESET_ALL}')
@@ -67,10 +69,7 @@ class Sorter:
             print(f'[{colorama.Fore.LIGHTYELLOW_EX}*{colorama.Style.RESET_ALL}] {colorama.Fore.LIGHTCYAN_EX}{file_path}{colorama.Style.RESET_ALL} : Удаление дубликатов и запись в файлы {colorama.Fore.LIGHTCYAN_EX}{len(self.results)}{colorama.Style.RESET_ALL} запросов')
 
             try:
-
-                for request in self.results:
-                    self.process_folder(request)
-
+                asyncio.get_event_loop().run_until_complete(asyncio.gather(*[self.process_file(request) for request in self.results]))
             except Exception as e:
                 print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] {colorama.Fore.LIGHTCYAN_EX}{file_path}{colorama.Style.RESET_ALL} : Ошибка: {colorama.Fore.LIGHTRED_EX}{str(e)}{colorama.Style.RESET_ALL}')
                 input('Нажмите Enter для выхода...')

@@ -30,7 +30,7 @@ def User_Input(app_version: str) -> (list, int):
     while True:
         raw_search_requests = input('Введите запросы через пробел: ').split(' ')
         if raw_search_requests:
-            search_requests = [request.strip(' ') for request in raw_search_requests]
+            search_requests = [request.strip(' ').strip() for request in raw_search_requests]
             break
 
     file_size = sum(os.path.getsize(file) for file in file_path_list) / 1048576

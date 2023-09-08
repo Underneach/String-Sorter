@@ -1,1 +1,1 @@
-nuitka --onefile --standalone --remove-output --show-progress --follow-import-to=os --follow-import-to=colorama --follow-import-to=re --follow-import-to=multiprocessing --windows-icon-from-ico=icon.ico sorter.py
+nuitka --onefile --standalone --remove-output --show-progress --follow-import-to=os --follow-import-to=colorama --follow-import-to=re --follow-import-to=asyncio --follow-import-to=aiofiles --follow-import-to=multiprocessing --windows-icon-from-ico=icon.ico sorter.py
