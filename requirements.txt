@@ -1,3 +1,6 @@
 colorama
 asyncio
 aiofiles
+psutil
+Nuitka
+pyinstaller
