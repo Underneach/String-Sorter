@@ -1,6 +1,5 @@
 import os
 import sys
-
 import colorama
 
 from modules.print_logo import Print_Logo
@@ -17,33 +16,31 @@ def User_Input(app_version: str) -> (list, int):
         file_path_list = sys.argv[1:]
     else:
         while True:
-            raw_file_paths = input(f'\n{colorama.Fore.LIGHTBLUE_EX}Пути с пробелами должны быть в кавычках ""{colorama.Style.RESET_ALL}\nВведите путь к файлам или папке через пробел: ').split(' ')
+            raw_file_paths = input(f'\n{colorama.Fore.LIGHTBLUE_EX}Пути с пробелами должны быть в кавычках ""{colorama.Style.RESET_ALL}\nВведите путь к файлам или папке через пробел: ').split()
 
             for file_path in raw_file_paths:
-
-                file_path = file_path.strip('"').strip("'").strip()  # Костыль для удаления кавычек в начале и конце строки и пробелов в начале и конце строки
+                file_path = file_path.strip(' "\'')  # Удаление кавычек и пробелов в начале и конце строки
 
                 if file_path:  # Если путь не пустой
-
                     if not os.path.exists(file_path):
-                        print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {file_path} не существует')
+                        print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {colorama.Fore.LIGHTBLUE_EX}{file_path}{colorama.Style.RESET_ALL} не существует')
                         continue
 
                     if os.path.isfile(file_path):
-                        file_path_list.append(file_path)
-                        continue
+                        file_path_list.append(file_path)  # Используем append для добавления файла
                     elif os.path.isdir(file_path):
-                        file_path_list.append(os.path.join(file_path, file) for file in os.listdir(file_path) if os.path.isfile(os.path.join(file_path, file)))
-                        continue
+                        file_path_list.extend(os.path.join(file_path, file) for file in os.listdir(file_path) if os.path.isfile(os.path.join(file_path, file)))
                     else:
                         print(f'[{colorama.Fore.LIGHTGREEN_EX}-{colorama.Style.RESET_ALL}] Путь {file_path} не является файлом или папкой.')
-                        continue
 
             if len(file_path_list) > 0:
                 break
+            else:
+                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Не найдено ни одного файла.')
 
     if not file_path_list:
         print("Нет файлов для обработки.")
+        input('Нажмите Enter для выхода...')
         sys.exit(1)
 
     while True:
