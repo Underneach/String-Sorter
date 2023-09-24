@@ -1,10 +1,7 @@
 import colorama
-import psutil
-import sys
 
 
 def Print_Logo(app_version: str):
-    print(f'Python {colorama.Fore.LIGHTCYAN_EX}{sys.version.split(" ")[0]}{colorama.Style.RESET_ALL}  Psutil {colorama.Fore.LIGHTCYAN_EX}{psutil.__version__}{colorama.Style.RESET_ALL}  ')
     print(
         colorama.Fore.LIGHTYELLOW_EX +
         colorama.Style.BRIGHT +
@@ -19,5 +16,5 @@ def Print_Logo(app_version: str):
                                                                       |__/                                ''' +
         colorama.Fore.LIGHTMAGENTA_EX +
         f'v{app_version}' +
-        '\n\n\n'
+        '\n\n\n\n'
     )

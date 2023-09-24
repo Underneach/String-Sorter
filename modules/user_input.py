@@ -1,5 +1,6 @@
 import os
 import sys
+
 import colorama
 
 from modules.print_logo import Print_Logo
@@ -14,29 +15,35 @@ def User_Input(app_version: str) -> (list, int):
 
     if len(sys.argv) > 1:
         file_path_list = sys.argv[1:]
+
     else:
         while True:
-            raw_file_paths = input(f'\n{colorama.Fore.LIGHTBLUE_EX}Пути с пробелами должны быть в кавычках ""{colorama.Style.RESET_ALL}\nВведите путь к файлам или папке через пробел: ').split()
+            # Получаем ввод пользователя и разделяем его на пути с пробелами
+            raw_file_paths = input(f'\n{colorama.Fore.LIGHTBLUE_EX}Пути с пробелами должны быть в кавычках ""{colorama.Style.RESET_ALL}\nВведите путь к файлам или папке через пробел: ')
 
-            for file_path in raw_file_paths:
-                file_path = file_path.strip(' "\'')  # Удаление кавычек и пробелов в начале и конце строки
+            if not raw_file_paths:
+                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Пути не введены.')
+                continue
 
-                if file_path:  # Если путь не пустой
-                    if not os.path.exists(file_path):
-                        print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {colorama.Fore.LIGHTBLUE_EX}{file_path}{colorama.Style.RESET_ALL} не существует')
-                        continue
+            raw_file_paths = [path.strip() for path in raw_file_paths.split('"') if path.strip()]
 
-                    if os.path.isfile(file_path):
-                        file_path_list.append(file_path)  # Используем append для добавления файла
-                    elif os.path.isdir(file_path):
-                        file_path_list.extend(os.path.join(file_path, file) for file in os.listdir(file_path) if os.path.isfile(os.path.join(file_path, file)))
+            for raw_path in raw_file_paths:
+                if os.path.exists(raw_path):
+                    if os.path.isfile(raw_path):
+                        file_path_list.append(raw_path)
+                    elif os.path.isdir(raw_path):
+                        # Добавляем все файлы в указанной директории в список file_path_list
+                        file_path_list.extend(os.path.join(raw_path, file) for file in os.listdir(raw_path) if os.path.isfile(os.path.join(raw_path, file)))
                     else:
-                        print(f'[{colorama.Fore.LIGHTGREEN_EX}-{colorama.Style.RESET_ALL}] Путь {file_path} не является файлом или папкой.')
+                        print(f'[{colorama.Fore.LIGHTGREEN_EX}-{colorama.Style.RESET_ALL}] Путь {raw_path} не является файлом или папкой.')
+                else:
+                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {colorama.Fore.LIGHTBLUE_EX}{raw_path}{colorama.Style.RESET_ALL} не существует')
 
             if len(file_path_list) > 0:
                 break
             else:
-                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Не найдено ни одного файла.')
+                if len(raw_file_paths) > 1:
+                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Не найдено ни одного файла.')
 
     if not file_path_list:
         print("Нет файлов для обработки.")
@@ -44,12 +51,16 @@ def User_Input(app_version: str) -> (list, int):
         sys.exit(1)
 
     while True:
-        raw_search_requests = input('\nВведите запросы через пробел: ').split(' ')
+        raw_search_requests = input('\nВведите запросы через пробел: ')
+
         if raw_search_requests:
-            search_requests = [request.strip(' ').strip() for request in raw_search_requests]
+            search_requests = [request.strip(' ').strip() for request in raw_search_requests.split(' ')]
             break
 
     file_size = sum(os.path.getsize(file) for file in file_path_list) / 1048576
+
+    file_path_list = list(set(file_path_list))
+    search_requests = list(set(search_requests))
 
     os.system('cls')
     Print_Logo(app_version)

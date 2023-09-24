@@ -4,3 +4,4 @@ aiofiles
 psutil
 Nuitka
 pyinstaller
+tqdm
