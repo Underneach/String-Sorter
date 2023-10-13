@@ -11,7 +11,7 @@ import colorama
 import aiofiles
 
 from modules.user_input import User_Input
-
+print(sys.version)
 
 class Sorter:
     def __init__(self, file_path_list, search_requests):
@@ -33,7 +33,7 @@ class Sorter:
             sorted_data = list(set(self.results[request]['extracted_data']))
             print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] {colorama.Fore.LIGHTBLUE_EX}{request}{colorama.Style.RESET_ALL} : {colorama.Fore.LIGHTBLUE_EX}{len(sorted_data)}{colorama.Style.RESET_ALL} строк')
             if len(sorted_data) > 0:
-                async with aiofiles.open(f'{self.app_dir}\\{request}.txt', 'w', encoding='utf-8', buffering=4096) as file:
+                async with aiofiles.open(f'{self.app_dir}\\{request}.txt', 'a', encoding='utf-8', buffering=4096) as file:
                     await file.write('\n'.join(sorted_data) + '\n')
 
         except Exception as e:
