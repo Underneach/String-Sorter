@@ -1,5 +1,0 @@
-pyinstaller
-nuitka
-colorama
-multiprocessing
-re
