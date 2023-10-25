@@ -1,7 +1,6 @@
+chardet
 colorama
 asyncio
-aiofiles
-psutil
-Nuitka
-pyinstaller
 tqdm
+psutil
+aiofiles

@@ -18,32 +18,35 @@ def User_Input(app_version: str) -> (list, int):
 
     else:
         while True:
-            # Получаем ввод пользователя и разделяем его на пути с пробелами
             raw_file_paths = input(f'\n{colorama.Fore.LIGHTBLUE_EX}Пути с пробелами должны быть в кавычках ""{colorama.Style.RESET_ALL}\nВведите путь к файлам или папке через пробел: ')
 
             if not raw_file_paths:
                 print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Пути не введены.')
                 continue
 
-            raw_file_paths = [path.strip() for path in raw_file_paths.split('"') if path.strip()]
-
-            for raw_path in raw_file_paths:
-                if os.path.exists(raw_path):
-                    if os.path.isfile(raw_path):
-                        file_path_list.append(raw_path)
-                    elif os.path.isdir(raw_path):
-                        # Добавляем все файлы в указанной директории в список file_path_list
-                        file_path_list.extend(os.path.join(raw_path, file) for file in os.listdir(raw_path) if os.path.isfile(os.path.join(raw_path, file)))
+            def recursive_zalupa(path):
+                if os.path.exists(path):
+                    if os.path.isfile(path):
+                        file_path_list.append(path)
+                    elif os.path.isdir(path):
+                        for file in os.listdir(path):
+                            file_path = os.path.join(path, file)
+                            recursive_zalupa(file_path)
                     else:
-                        print(f'[{colorama.Fore.LIGHTGREEN_EX}-{colorama.Style.RESET_ALL}] Путь {raw_path} не является файлом или папкой.')
+                        print(f'[{colorama.Fore.LIGHTGREEN_EX}-{colorama.Style.RESET_ALL}] Путь {path} не является файлом или папкой.')
                 else:
-                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {colorama.Fore.LIGHTBLUE_EX}{raw_path}{colorama.Style.RESET_ALL} не существует')
+                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Путь {colorama.Fore.LIGHTBLUE_EX}{path}{colorama.Style.RESET_ALL} не существует')
+
+            file_paths = [path.strip() for path in raw_file_paths.split('"') if path.strip()]
+            file_path_list = []
+
+            for path in file_paths:
+                recursive_zalupa(path)
 
             if len(file_path_list) > 0:
                 break
             else:
-                if len(raw_file_paths) > 1:
-                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Не найдено ни одного файла.')
+                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Не найдено ни одного файла или папки')
 
     if not file_path_list:
         print("Нет файлов для обработки.")
