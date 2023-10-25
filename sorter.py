@@ -49,7 +49,6 @@ class Sorter:
 
 
 if __name__ == '__main__':
-    print(sys.version)
     freeze_support()
     app_version = '1.5.0'
     colorama.init(autoreset=True)
