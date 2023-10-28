@@ -1,15 +1,19 @@
 # String-Sorter
 ## Сортер ваших url:log:pass строк из файла
-![image](https://github.com/Underneach/String-Sorter/assets/137613889/0a4e33d0-26e2-4859-8cf3-c8d1b8ecbde3)
+![image](https://github.com/Underneach/String-Sorter/blob/main/media/1.png)
+![image](https://github.com/Underneach/String-Sorter/blob/main/media/2.png)
+![image](https://github.com/Underneach/String-Sorter/blob/main/media/3.png)
 
-    Поиск по нескольким файлам / папкам с файлами 
+
+    Рекурсивный поиск по нескольким папкам с файлами / файлам
     Поиск нескольких запросов
     Сортировка на дубли
     Чтение по чанкам
     Прогресс бар
-    Асинхронная запись найденных строк в файл с названием запроса
+    Многопоточная запись найденных строк в файл с названием запроса
     Использует все ядра процессора кроме одного 
-    Поиск по регулярному выражению search_request + '.*:(.+:.+)'    
+    Использует 75% доступной оперативной памяти
+    Поиск по регулярному выражению search_request .*request.*:(.+:.+)   
     Билды nuitka и pyinstaller
 
 ## Скачать
