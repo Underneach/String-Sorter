@@ -1,6 +1,4 @@
 chardet
 colorama
-asyncio
 tqdm
 psutil
-aiofiles
