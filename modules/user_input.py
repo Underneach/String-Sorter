@@ -12,9 +12,7 @@ def User_Input(app_version: str) -> (list, int):
     file_path_list = []
     file_size = 0
     raw_file_paths = ''
-    file_path_list = ['@urlcloud FREE.txt']
-    search_requests = ['google', 'twitter']
-    '''
+
     if len(sys.argv) > 1:
         file_path_list = sys.argv[1:]
 
@@ -61,7 +59,7 @@ def User_Input(app_version: str) -> (list, int):
         if raw_search_requests:
             search_requests = [request.strip(' ').strip() for request in raw_search_requests.split(' ')]
             break
-    '''
+
     file_size = sum(os.path.getsize(file) for file in file_path_list) / 1048576
 
     file_path_list = list(set(file_path_list))
