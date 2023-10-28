@@ -16,9 +16,10 @@ from modules.work.get_result import Get_result
 class Sorter:
     def __init__(self, file_path_list, search_requests):
         self.file_path_list = file_path_list
+        self.search_requests = search_requests
+        self.invalid_pattern = r'.{201,}|UNKOWN'
         self.app_dir = os.getcwd()
         self.processor_count = min(max(psutil.cpu_count(logical=True) - 1, 1), 61) if psutil.cpu_count(logical=True) is not None else 4  # Количество ядер - 1
-        self.search_requests = search_requests
         self.checked_lines = 0
         self.invalid_lines = 0
         self.encoding = None
@@ -30,17 +31,14 @@ class Sorter:
 
     def main(self) -> None:
 
-        print(
-            f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Доступные ресурсы : {colorama.Fore.LIGHTBLUE_EX}{self.processor_count}/{self.processor_count + 1}{colorama.Style.RESET_ALL} ядер : {colorama.Fore.LIGHTBLUE_EX}{round((psutil.virtual_memory().total - psutil.virtual_memory().used) / 1048576)}/{round(psutil.virtual_memory().total / 1048576)}{colorama.Style.RESET_ALL} МБ памяти\n'
-        )
+        print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Доступные ресурсы : {colorama.Fore.LIGHTBLUE_EX}{self.processor_count}/{self.processor_count + 1}{colorama.Style.RESET_ALL} ядер : {colorama.Fore.LIGHTBLUE_EX}{round((psutil.virtual_memory().total - psutil.virtual_memory().used) / 1048576)}/{round(psutil.virtual_memory().total / 1048576)}{colorama.Style.RESET_ALL} МБ памяти\n')
         print(f'[{colorama.Fore.LIGHTYELLOW_EX}*{colorama.Style.RESET_ALL}] Запуск сортера...')
 
         for file_path in self.file_path_list:
 
             Sorting(self, file_path)
 
-            for job in self.jobs_list:
-                Get_result(self, job)
+            Get_result(self)
 
             Write_result(self, file_path)
 
