@@ -17,7 +17,7 @@ class Sorter:
     def __init__(self, file_path_list, search_requests, encoding):
         self.file_path_list = file_path_list
         self.search_requests = search_requests
-        self.invalid_pattern = r'.{201,}|UNKOWN'
+        self.invalid_pattern = r'.{201,}|UNKNOWN'
         self.app_dir = os.getcwd()
         self.processor_count = min(max(psutil.cpu_count(logical=True) - 1, 1), 61) if psutil.cpu_count(logical=True) is not None else 4  # Количество ядер - 1
         self.checked_lines = 0

@@ -1,6 +1,7 @@
 import os
 import sys
 import codecs
+import time
 
 import colorama
 
@@ -70,29 +71,30 @@ def User_Input(app_version: str) -> (list, list, str, int):
     os.system('cls')
 
     Print_Logo(app_version)
-    print(f'{colorama.Fore.LIGHTBLUE_EX}Примеры кодировок:')
+    print('Примеры кодировок:')
     print(f'{colorama.Fore.LIGHTBLUE_EX}auto{colorama.Style.RESET_ALL} - автоматическое определение')
     print(f'{colorama.Fore.LIGHTBLUE_EX}utf-8{colorama.Style.RESET_ALL} - стандартная кодировка')
     print(f'{colorama.Fore.LIGHTBLUE_EX}latin-1{colorama.Style.RESET_ALL} - латинские символы\n')
     print(f'{colorama.Fore.LIGHTBLUE_EX}Пропустите для автоматического определения{colorama.Style.RESET_ALL}')
 
     while True:
-        raw_encoding = input('Выберите кодировку или введите свою:').strip()
+        raw_encoding = input('Выберите кодировку или введите свою: ').strip()
 
-        if raw_encoding is None or 'auto' or '':
-            encoding = 'auto'
-            break
+        match raw_encoding:
 
-        else:
-            try:
-                codecs.lookup(encoding)
-                print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Кодировка {encoding} поддерживается')
-                encoding = raw_encoding
+            case ('auto' | '' | None):
+                encoding = 'auto'
                 break
-            except LookupError:
-                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Кодировка {encoding} неподдерживается')
+            case _:
+                try:
+                    codecs.lookup(raw_encoding)
+                    print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Кодировка {raw_encoding} поддерживается')
+                    time.sleep(2)
+                    encoding = raw_encoding
+                    break
+                except LookupError:
+                    print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Кодировка {raw_encoding} неподдерживается\n')
 
-    print(encoding)
     os.system('cls')
     Print_Logo(app_version)
     return file_path_list, search_requests, encoding, int(file_size)

@@ -10,7 +10,7 @@ from modules.work.get_encoding import Get_encoding
 
 
 def Sorting(self, file_path: str) -> None:
-    self.encoding = Get_encoding(self, file_path) if self.encoding == 'auto' else self.encoding == self.encoding
+    self.encoding = Get_encoding(file_path) if self.encoding == 'auto' else self.encoding
     file_size = os.path.getsize(file_path)
     chunk_size = min(max(round((psutil.virtual_memory().total - psutil.virtual_memory().used * 0.75 / 8) if psutil.virtual_memory().total - psutil.virtual_memory().used is not None or 0 else 2097152 / 80), 100000), round(file_size / 80))
     string_count = round(file_size / 80)
