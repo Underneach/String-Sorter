@@ -11,8 +11,4 @@ def Get_result(self) -> None:  # Получаем результаты рабо�
             elif string_type is True:
                 self.invalid_lines += 1
         except Exception as e:
-            print(e)
-        '''
-        except Exception as e:
             print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Ошибка получения данных : {colorama.Fore.LIGHTRED_EX}{str(e)}{colorama.Style.RESET_ALL}')
-        '''

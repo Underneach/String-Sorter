@@ -14,7 +14,7 @@ from modules.work.get_result import Get_result
 
 
 class Sorter:
-    def __init__(self, file_path_list, search_requests):
+    def __init__(self, file_path_list, search_requests, encoding):
         self.file_path_list = file_path_list
         self.search_requests = search_requests
         self.invalid_pattern = r'.{201,}|UNKOWN'
@@ -22,7 +22,7 @@ class Sorter:
         self.processor_count = min(max(psutil.cpu_count(logical=True) - 1, 1), 61) if psutil.cpu_count(logical=True) is not None else 4  # Количество ядер - 1
         self.checked_lines = 0
         self.invalid_lines = 0
-        self.encoding = None
+        self.encoding = encoding
         self.chunk_size = None
         self.jobs_list = []
         self.results = {}
@@ -30,12 +30,10 @@ class Sorter:
             self.results[request] = {'compile_request': re.compile(r'.*' + request + r'.*:(.+:.+)'), 'extracted_data': []}
 
     def main(self) -> None:
-
         print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Доступные ресурсы : {colorama.Fore.LIGHTBLUE_EX}{self.processor_count}/{self.processor_count + 1}{colorama.Style.RESET_ALL} ядер : {colorama.Fore.LIGHTBLUE_EX}{round((psutil.virtual_memory().total - psutil.virtual_memory().used) / 1048576)}/{round(psutil.virtual_memory().total / 1048576)}{colorama.Style.RESET_ALL} МБ памяти\n')
         print(f'[{colorama.Fore.LIGHTYELLOW_EX}*{colorama.Style.RESET_ALL}] Запуск сортера...')
 
         for file_path in self.file_path_list:
-
             Sorting(self, file_path)
 
             Get_result(self)
@@ -48,15 +46,15 @@ class Sorter:
 
 if __name__ == '__main__':
     freeze_support()
-    app_version = '1.5.0'
+    app_version = '1.5.1'
     colorama.init(autoreset=True)
-    file_path_list, search_requests, file_size = User_Input(app_version)
+    file_path_list, search_requests, encoding, file_size = User_Input(app_version)
 
     print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Всего файлов : {colorama.Fore.LIGHTBLUE_EX}{len(file_path_list)}{colorama.Style.RESET_ALL} объемом {colorama.Fore.LIGHTBLUE_EX}{file_size}{colorama.Style.RESET_ALL} МБ')
     print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Всего запросов : {colorama.Fore.LIGHTBLUE_EX}{len(search_requests)}{colorama.Style.RESET_ALL}')
 
     time_start = time.time()
-    Sorter(file_path_list, search_requests).main()
+    Sorter(file_path_list, search_requests, encoding).main()
     time_end = time.time()
 
     print(f"\nВремя выполнения: {colorama.Fore.LIGHTBLUE_EX}{time_end - time_start}")

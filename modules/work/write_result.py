@@ -6,7 +6,6 @@ import colorama
 
 def Write_result(self, file_path: str) -> None:
     def Process_file(self, request: str) -> None:
-
         try:
             request = re.sub(r'[\\/|:*?"<>]', '_', request.strip())
             file_path = f'{self.app_dir}\\{request}.txt'
@@ -27,7 +26,6 @@ def Write_result(self, file_path: str) -> None:
     print(f'[{colorama.Fore.LIGHTYELLOW_EX}*{colorama.Style.RESET_ALL}] Удаление дубликатов и запись в файлы {colorama.Fore.LIGHTBLUE_EX}{len(self.results)}{colorama.Style.RESET_ALL} запросов')
 
     try:
-
         with ThreadPoolExecutor(max_workers=len(self.search_requests)) as executor:
             for request in self.search_requests:
                 executor.submit(Process_file, self, request)

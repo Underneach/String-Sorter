@@ -1,12 +1,13 @@
 import os
 import sys
+import codecs
 
 import colorama
 
 from modules.print_logo import Print_Logo
 
 
-def User_Input(app_version: str) -> (list, int):
+def User_Input(app_version: str) -> (list, list, str, int):
     Print_Logo(app_version)
 
     file_path_list = []
@@ -52,7 +53,9 @@ def User_Input(app_version: str) -> (list, int):
         print("Нет файлов для обработки.")
         input('Нажмите Enter для выхода...')
         sys.exit(1)
+    os.system('cls')
 
+    Print_Logo(app_version)
     while True:
         raw_search_requests = input('\nВведите запросы через пробел: ')
 
@@ -64,7 +67,32 @@ def User_Input(app_version: str) -> (list, int):
 
     file_path_list = list(set(file_path_list))
     search_requests = list(set(search_requests))
+    os.system('cls')
 
+    Print_Logo(app_version)
+    print(f'{colorama.Fore.LIGHTBLUE_EX}Примеры кодировок:')
+    print(f'{colorama.Fore.LIGHTBLUE_EX}auto{colorama.Style.RESET_ALL} - автоматическое определение')
+    print(f'{colorama.Fore.LIGHTBLUE_EX}utf-8{colorama.Style.RESET_ALL} - стандартная кодировка')
+    print(f'{colorama.Fore.LIGHTBLUE_EX}latin-1{colorama.Style.RESET_ALL} - латинские символы\n')
+    print(f'{colorama.Fore.LIGHTBLUE_EX}Пропустите для автоматического определения{colorama.Style.RESET_ALL}')
+
+    while True:
+        raw_encoding = input('Выберите кодировку или введите свою:').strip()
+
+        if raw_encoding is None or 'auto' or '':
+            encoding = 'auto'
+            break
+
+        else:
+            try:
+                codecs.lookup(encoding)
+                print(f'[{colorama.Fore.LIGHTGREEN_EX}+{colorama.Style.RESET_ALL}] Кодировка {encoding} поддерживается')
+                encoding = raw_encoding
+                break
+            except LookupError:
+                print(f'[{colorama.Fore.LIGHTRED_EX}-{colorama.Style.RESET_ALL}] Кодировка {encoding} неподдерживается')
+
+    print(encoding)
     os.system('cls')
     Print_Logo(app_version)
-    return file_path_list, search_requests, int(file_size)
+    return file_path_list, search_requests, encoding, int(file_size)

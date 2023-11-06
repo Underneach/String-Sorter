@@ -2,7 +2,6 @@ from chardet.universaldetector import UniversalDetector
 
 
 def Get_encoding(self, file_path: str) -> str:
-
     detector = UniversalDetector()
 
     try:
